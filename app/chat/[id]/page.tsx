@@ -7,6 +7,9 @@ const App = ({ params }: { params: Promise<{ id: string }> }) => {
   const [id, setId] = useState<string>();
 
   useEffect(() => {
+    /**
+     * 初期化メソッド
+     */
     const func = async () => {
       const { id } = await params;
       setId(id);

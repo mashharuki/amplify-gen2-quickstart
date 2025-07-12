@@ -1,6 +1,4 @@
-// STEP3 Action: コメントアウト削除
-// import { env } from '$amplify/env/webSearch';
-// import type { Schema } from '../resource';
+import { env } from '$amplify/env/webSearch';
 import { ChatBedrockConverse } from "@langchain/aws";
 import {
   BaseMessage,
@@ -10,6 +8,7 @@ import {
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { RunnableLambda } from "@langchain/core/runnables";
 import { TavilySearch } from "@langchain/tavily";
+import type { Schema } from '../resource';
 
 import { CROSS_REGION_BEDROCK_MODEL_PATH } from "../../constants";
 
@@ -42,10 +41,9 @@ type AuthenticatedEvent = {
   };
 };
 
-// STEP3 Action: コメントアウト削除
 const tavilyTool = new TavilySearch({
   maxResults: 3,
-  // tavilyApiKey: env.TAVILY_API_KEY,
+  tavilyApiKey: env.TAVILY_API_KEY,
 });
 const model = new ChatBedrockConverse({
   model: CROSS_REGION_BEDROCK_MODEL_PATH,
@@ -112,47 +110,46 @@ const validateInput = (message: string): void => {
   }
 };
 
-// STEP3 Action: メインのhandler関数を有効化
-// export const handler: Schema['webSearch']['functionHandler'] = async (
-//   event
-// ) => {
-//   try {
-//     // 認証・認可の検証
-//     const { username, sub } = validateAuthentication(
-//       event as AuthenticatedEvent
-//     );
+/**
+ * Web検索用のLambda関数ハンドラー
+ * @param event 
+ * @returns 
+ */
+export const handler: Schema['webSearch']['functionHandler'] = async (
+  event
+) => {
+  try {
+    // 認証・認可の検証
+    const { username, sub } = validateAuthentication(
+      event as AuthenticatedEvent
+    );
 
-//     // 入力値の事前チェック
-//     const message = event.arguments.message;
-//     if (!message) {
-//       throw new Error('メッセージが必要です');
-//     }
+    // 入力値の事前チェック
+    const message = event.arguments.message;
+    if (!message) {
+      throw new Error('メッセージが必要です');
+    }
 
-//     // 入力値の検証
-//     validateInput(message);
+    // 入力値の検証
+    validateInput(message);
 
-//     console.log(`Web search request from user: ${username} (${sub})`);
+    console.log(`Web search request from user: ${username} (${sub})`);
 
-//     // エージェントの実行
-//     const answer = await toolChain.invoke(message);
-//     console.log({ answer });
+    // エージェントの実行
+    const answer = await toolChain.invoke(message);
+    console.log({ answer });
 
-//     return {
-//       value: answer.content,
-//     };
-//   } catch (error) {
-//     console.error('Web search error:', error);
+    return {
+      value: answer.content,
+    };
+  } catch (error) {
+    console.error('Web search error:', error);
 
-//     // セキュアなエラーメッセージの返却
-//     if (error instanceof Error) {
-//       throw new Error(`検索処理でエラーが発生しました: ${error.message}`);
-//     } else {
-//       throw new Error('検索処理で予期しないエラーが発生しました');
-//     }
-//   }
-// };
-
-// STEP3 Action: 仮のhandlerを削除
-export const handler = async (event: AuthenticatedEvent) => {
-  // 何もしない場合のデフォルトレスポンス
+    // セキュアなエラーメッセージの返却
+    if (error instanceof Error) {
+      throw new Error(`検索処理でエラーが発生しました: ${error.message}`);
+    } else {
+      throw new Error('検索処理で予期しないエラーが発生しました');
+    }
+  }
 };
