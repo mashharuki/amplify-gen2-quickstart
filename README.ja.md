@@ -112,3 +112,10 @@ npm run tsc
 ## ライセンス
 
 このプロジェクトは [MIT ライセンス](LICENSE) の下で公開されています。
+
+##　Secret Managerへの環境変数の登録
+
+```bash
+# Tavily Web検索API設定
+npx ampx sandbox secret set TAVILY_API_KEY
+```

@@ -1,9 +1,7 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { CROSS_REGION_BEDROCK_MODEL_PATH } from "../constants";
 import { chatHandler } from "./chatHandler/resource";
-
-// STEP3 Action: コメントアウト削除
-// import { webSearch } from "./webSearch/resource";
+import { webSearch } from "./webSearch/resource";
 
 // STEP7 Action: 外部ファイルからのインポートを有効化
 // import { DETAILED_SYSTEM_PROMPT } from "./prompts";
@@ -33,20 +31,20 @@ const schema = a.schema({
   //   .identifier(["filePath"])
   //   .authorization((allow) => allow.authenticated()),
 
-  // Define functions
+  
   // STEP3 Action: webSearch関数の定義を有効化
-  // webSearch: a
-  //   .query()
-  //   .arguments({
-  //     message: a.string(),
-  //   })
-  //   .returns(
-  //     a.customType({
-  //       value: a.string(),
-  //     }),
-  //   )
-  //   .handler(a.handler.function(webSearch))
-  //   .authorization((allow) => allow.authenticated()),
+  webSearch: a
+    .query()
+    .arguments({
+      message: a.string(),
+    })
+    .returns(
+      a.customType({
+        value: a.string(),
+      }),
+    )
+    .handler(a.handler.function(webSearch))
+    .authorization((allow) => allow.authenticated()),
 
   // Define AI Kit
   chat: a
@@ -56,7 +54,7 @@ const schema = a.schema({
       },
       systemPrompt: DETAILED_SYSTEM_PROMPT,
       handler: chatHandler,
-      tools: [
+      tools: [ // AI Agent用にツールを追加していく
         // STEP4 Action: chatのtoolsにWikiQueryツールを追加
         // a.ai.dataTool({
         //   name: "WikiQuery",
@@ -72,11 +70,11 @@ const schema = a.schema({
         //   modelOperation: "list",
         // }),
         // STEP3 Action: chatのtoolsにwebSearchツールを追加
-        // a.ai.dataTool({
-        //   name: "SearchTool",
-        //   description: "Searches the web for information",
-        //   query: a.ref("webSearch"),
-        // }),
+        a.ai.dataTool({
+          name: "SearchTool",
+          description: "Searches the web for information",
+          query: a.ref("webSearch"),
+        }),
       ],
     })
     .authorization((allow) => allow.owner()),
