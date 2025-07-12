@@ -81,3 +81,7 @@ npm run tsc
 ## License
 
 This project is released under the [MIT License](LICENSE).
+
+
+## 参考文献
+- [Amplify UI Components](https://ui.docs.amplify.aws/)

@@ -1,10 +1,8 @@
 import { defineBackend } from "@aws-amplify/backend";
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { auth } from './auth/resource';
-
-// STEP2 Action: コメントアウト削除
-// import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
-// import { chatHandler } from './data/chatHandler/resource';
-// import { data } from './data/resource';
+import { chatHandler } from './data/chatHandler/resource';
+import { data } from './data/resource';
 
 // STEP3 Action: コメントアウト削除
 // import { webSearch } from './data/webSearch/resource';
@@ -17,19 +15,19 @@ import { auth } from './auth/resource';
 
 const backend = defineBackend({
   auth,
-  // data, // STEP2 Action: コメントアウト削除
-  // chatHandler, // STEP2 Action: コメントアウト削除
+  data, 
+  chatHandler,
   // webSearch, // STEP3 Action: コメントアウト削除
   // storage, // STEP5 Action: コメントアウト削除
 });
 
-// STEP2 Action: 以下のBedrock権限設定も有効化
-// backend.chatHandler.resources.lambda.addToRolePolicy(
-//   new PolicyStatement({
-//     actions: ['bedrock:InvokeModel', 'bedrock:InvokeModelWithResponseStream'],
-//     resources: ['*'],
-//   })
-// );
+// Bedrock権限設定
+backend.chatHandler.resources.lambda.addToRolePolicy(
+  new PolicyStatement({
+    actions: ['bedrock:InvokeModel', 'bedrock:InvokeModelWithResponseStream'],
+    resources: ['*'],
+  })
+);
 
 // STEP3 Action: 以下のBedrock権限設定も有効化
 // backend.webSearch.resources.lambda.addToRolePolicy(

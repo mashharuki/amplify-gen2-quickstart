@@ -2,6 +2,9 @@ import { defineConversationHandlerFunction } from '@aws-amplify/backend-ai/conve
 
 import { CROSS_REGION_BEDROCK_MODEL_PATH } from '../../constants';
 
+/**
+ * Bedrockのカスタムチャットハンドラーを定義します。
+ */
 export const chatHandler = defineConversationHandlerFunction({
   entry: './index.ts',
   name: 'customChatHandler',
