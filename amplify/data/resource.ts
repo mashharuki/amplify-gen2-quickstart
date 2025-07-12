@@ -12,15 +12,14 @@ const DETAILED_SYSTEM_PROMPT = "あなたは優秀なAIアシスタントです�
 const schema = a.schema({
   // Define data models
 
-  // STEP4 Action: UserWikiモデルを有効化
-  // UserWiki: a
-  //   .model({
-  //     title: a.string().required(),
-  //     content: a.string().required(),
-  //     username: a.id().required(),
-  //   })
-  //   .secondaryIndexes((index) => [index("username")])
-  //   .authorization((allow) => allow.ownerDefinedIn("username")),
+  UserWiki: a
+    .model({
+      title: a.string().required(),
+      content: a.string().required(),
+      username: a.id().required(),
+    })
+    .secondaryIndexes((index) => [index("username")])
+    .authorization((allow) => allow.ownerDefinedIn("username")),
 
   // STEP6 Action: PublicStorageモデルを有効化
   // PublicStorage: a
@@ -55,13 +54,12 @@ const schema = a.schema({
       systemPrompt: DETAILED_SYSTEM_PROMPT,
       handler: chatHandler,
       tools: [ // AI Agent用にツールを追加していく
-        // STEP4 Action: chatのtoolsにWikiQueryツールを追加
-        // a.ai.dataTool({
-        //   name: "WikiQuery",
-        //   description: "Searches for Wiki records",
-        //   model: a.ref("UserWiki"),
-        //   modelOperation: "list",
-        // }),
+        a.ai.dataTool({
+          name: "WikiQuery",
+          description: "Searches for Wiki records",
+          model: a.ref("UserWiki"),
+          modelOperation: "list",
+        }),
         // STEP6 Action: chatのtoolsにStorageQueryツールを追加
         // a.ai.dataTool({
         //   name: "StorageQuery",
