@@ -20,19 +20,38 @@
 1. 依存関係をインストールします：
 
 ```bash
-npm install
+yarn install
 ```
 
 2. Amplify Gen2のバックエンドをローカルで実行します：
+
+このコマンドによって開発のためのリソースがAWS上で立ち上がる
+
+もし以下の環境セットアップを行なっていない場合は行うこと！
+
+[Configure AWS for local development](https://docs.amplify.aws/react/start/account-setup/)
 
 ```bash
 npx ampx sandbox
 ```
 
+以下のようになっていればOK!
+
+```bash
+
+4:35:46 PM ✔ Backend synthesized in 0.83 seconds
+4:35:50 PM ✔ Type checks completed in 4.34 seconds
+4:35:51 PM ✔ Built and published assets
+4:35:57 PM ✔ Deployment completed in 6.18 seconds
+4:35:57 PM [Sandbox] Watching for file changes...
+4:35:58 PM File written: amplify_outputs.json
+
+```
+
 3. 別のターミナルでNext.jsの開発サーバーを起動します：
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 4. ブラウザで [http://localhost:3000](http://localhost:3000) を開いてアプリケーションを確認します。

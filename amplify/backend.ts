@@ -1,6 +1,5 @@
 import { defineBackend } from "@aws-amplify/backend";
-// STEP1 Action: コメントアウト削除
-// import { auth } from './auth/resource';
+import { auth } from './auth/resource';
 
 // STEP2 Action: コメントアウト削除
 // import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
@@ -17,7 +16,7 @@ import { defineBackend } from "@aws-amplify/backend";
 // import { OnUploaded } from './custom/onUploaded/resource';
 
 const backend = defineBackend({
-  // auth, // STEP1 Action: コメントアウト削除
+  auth,
   // data, // STEP2 Action: コメントアウト削除
   // chatHandler, // STEP2 Action: コメントアウト削除
   // webSearch, // STEP3 Action: コメントアウト削除
