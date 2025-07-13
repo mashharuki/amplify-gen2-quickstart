@@ -1,17 +1,15 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { CROSS_REGION_BEDROCK_MODEL_PATH } from "../constants";
 import { chatHandler } from "./chatHandler/resource";
+import { DETAILED_SYSTEM_PROMPT } from "./prompts";
 import { webSearch } from "./webSearch/resource";
 
-// STEP7 Action: 外部ファイルからのインポートを有効化
-// import { DETAILED_SYSTEM_PROMPT } from "./prompts";
-
-// STEP7 Action: ハードコードされたプロンプトを削除
-const DETAILED_SYSTEM_PROMPT = "あなたは優秀なAIアシスタントです。";
-
+/**
+ * This file defines the data schema for the Amplify project.
+ * It includes models for UserWiki and PublicStorage, as well as AI Kit configurations.
+ */
 const schema = a.schema({
   // Define data models
-
   UserWiki: a
     .model({
       title: a.string().required(),
@@ -21,16 +19,14 @@ const schema = a.schema({
     .secondaryIndexes((index) => [index("username")])
     .authorization((allow) => allow.ownerDefinedIn("username")),
 
-  // STEP6 Action: PublicStorageモデルを有効化
-  // PublicStorage: a
-  //   .model({
-  //     filePath: a.string().required(),
-  //     description: a.string(),
-  //   })
-  //   .identifier(["filePath"])
-  //   .authorization((allow) => allow.authenticated()),
+  PublicStorage: a
+    .model({
+      filePath: a.string().required(),
+      description: a.string(),
+    })
+    .identifier(["filePath"])
+    .authorization((allow) => allow.authenticated()),
 
-  
   // STEP3 Action: webSearch関数の定義を有効化
   webSearch: a
     .query()
@@ -61,12 +57,12 @@ const schema = a.schema({
           modelOperation: "list",
         }),
         // STEP6 Action: chatのtoolsにStorageQueryツールを追加
-        // a.ai.dataTool({
-        //   name: "StorageQuery",
-        //   description: "Searches for PublicStorage records",
-        //   model: a.ref("PublicStorage"),
-        //   modelOperation: "list",
-        // }),
+        a.ai.dataTool({
+          name: "StorageQuery",
+          description: "Searches for PublicStorage records",
+          model: a.ref("PublicStorage"),
+          modelOperation: "list",
+        }),
         // STEP3 Action: chatのtoolsにwebSearchツールを追加
         a.ai.dataTool({
           name: "SearchTool",

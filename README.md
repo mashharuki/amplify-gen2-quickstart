@@ -78,6 +78,12 @@ npm run format
 npm run tsc
 ```
 
+## Delete backend resource
+
+```bash
+npx ampx sandbox delete
+```
+
 ## License
 
 This project is released under the [MIT License](LICENSE).
